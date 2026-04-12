@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A2E4A">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="28dp">
+
+        <!-- Header -->
+        <View
+            android:layout_width="48dp"
+            android:layout_height="3dp"
+            android:background="#4FC3F7"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp"/>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gestionar Precio"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registrar o actualizar precio de combustible"
+            android:textSize="13sp"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="36dp"/>
+
+        <!-- Tipo de combustible -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TIPO DE COMBUSTIBLE"
+            android:textSize="11sp"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerCombustible"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="#243B5E"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- Estación -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ESTACIÓN"
+            android:textSize="11sp"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerEstaciones"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="#243B5E"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- Precio -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NUEVO PRECIO"
+            android:textSize="11sp"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/editPrecio"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="Ingrese precio"
+            android:textColor="#FFFFFF"
+            android:inputType="numberDecimal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="#243B5E"
+            android:layout_marginBottom="32dp"/>
+
+        <Button
+            android:id="@+id/buttonGuardarPrecio"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="GUARDAR PRECIO"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.06"
+            android:backgroundTint="#1565C0"/>
+
+    </LinearLayout>
+</ScrollView>

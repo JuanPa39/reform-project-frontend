@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A2E4A">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="28dp">
+
+        <!-- Header -->
+        <View
+            android:layout_width="48dp"
+            android:layout_height="3dp"
+            android:background="#4FC3F7"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp"/>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+        <TextView
+            android:id="@+id/textViewTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registrar Estación"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="6dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Completa los datos de la nueva estación"
+            android:textSize="13sp"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="36dp"/>
+
+        <!-- Nombre -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NOMBRE DE LA ESTACIÓN"
+            android:textSize="11sp"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/editTextNombre"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="Ej: Estación Centro"
+            android:textColor="#FFFFFF"
+            android:inputType="text"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="#243B5E"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- NIT -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NIT (ÚNICO)"
+            android:textSize="11sp"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/editTextNit"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="Ej: 900123456-7"
+            android:textColor="#FFFFFF"
+            android:inputType="text"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="#243B5E"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- Ubicación -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UBICACIÓN"
+            android:textSize="11sp"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/editTextUbicacion"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="Ej: Cra 45 # 23-12"
+            android:textColor="#FFFFFF"
+            android:inputType="text"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="#243B5E"
+            android:layout_marginBottom="32dp"/>
+
+        <Button
+            android:id="@+id/buttonRegistrar"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="REGISTRAR ESTACIÓN"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.06"
+            android:backgroundTint="#1565C0"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/textViewMensaje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"/>
+
+    </LinearLayout>
+</ScrollView>

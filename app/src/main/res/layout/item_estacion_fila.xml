@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="#1A2E4A"
+    android:paddingTop="14dp"
+    android:paddingBottom="14dp"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:gravity="center_vertical">
+
+    <!-- Barra izquierda -->
+    <View
+        android:layout_width="4dp"
+        android:layout_height="40dp"
+        android:background="#4FC3F7"
+        android:layout_marginEnd="14dp"/>
+
+    <!-- Texto de la estación -->
+    <TextView
+        android:id="@+id/textEstacionItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="14sp"
+        android:textColor="#FFFFFF"
+        android:lineSpacingExtra="4dp"/>
+
+</LinearLayout>

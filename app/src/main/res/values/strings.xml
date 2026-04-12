@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Estaciones de servicio por zona</string>
+    <string name="find_station">lista de zonas del país</string>
+
+    <string-array name="zones">
+        <item>Pacífica</item>
+        <item>Orinoquía</item>
+        <item>Andina</item>
+        <item>Caribe</item>
+        <item>Amazonía</item>
+    </string-array>
+    <string name="hint_cliente">Escribe tu consulta (precio/disponibilidad)...</string>
+    <string name="send_cliente">Enviar a Estación</string>
+    <string name="hint_empleado">Escribe tu respuesta...</string>
+    <string name="responder">Responder al Cliente</string>
+</resources>

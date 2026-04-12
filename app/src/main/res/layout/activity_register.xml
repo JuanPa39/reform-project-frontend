@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0F1F35"
+    tools:context=".Activities.RegisterActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="28dp"
+        android:paddingRight="28dp"
+        android:paddingTop="48dp"
+        android:paddingBottom="40dp">
+
+        <!-- Header decorativo -->
+        <View
+            android:layout_width="40dp"
+            android:layout_height="3dp"
+            android:background="#4FC3F7"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registro de Usuario"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:fontFamily="sans-serif-medium"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Crea tu cuenta para continuar"
+            android:textSize="13sp"
+            android:textColor="#90A4AE"
+            android:layout_marginBottom="28dp"
+            android:layout_marginTop="4dp"/>
+
+        <!-- NOMBRE COMPLETO -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NOMBRE COMPLETO"
+            android:textSize="11sp"
+            android:letterSpacing="0.1"
+            android:textColor="#90A4AE"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tu nombre completo"
+            android:layout_marginBottom="18dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="#2A4A72"
+            app:boxBackgroundColor="#172A45"
+            app:hintTextColor="#4FC3F7"
+            app:startIconDrawable="@drawable/ic_person"
+            app:startIconTint="#4FC3F7">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextNombre"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#546E7A"
+                android:inputType="textPersonName"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+        <!-- USUARIO -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="USUARIO"
+            android:textSize="11sp"
+            android:letterSpacing="0.1"
+            android:textColor="#90A4AE"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@usuario"
+            android:layout_marginBottom="18dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="#2A4A72"
+            app:boxBackgroundColor="#172A45"
+            app:hintTextColor="#4FC3F7"
+            app:startIconDrawable="@drawable/ic_account_circle"
+            app:startIconTint="#4FC3F7">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#546E7A"
+                android:inputType="text"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- CORREO -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CORREO"
+            android:textSize="11sp"
+            android:letterSpacing="0.1"
+            android:textColor="#90A4AE"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="ejemplo@correo.com"
+            android:layout_marginBottom="18dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="#2A4A72"
+            app:boxBackgroundColor="#172A45"
+            app:hintTextColor="#4FC3F7"
+            app:startIconDrawable="@drawable/ic_email"
+            app:startIconTint="#4FC3F7">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#546E7A"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- TELÉFONO -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TELÉFONO"
+            android:textSize="11sp"
+            android:letterSpacing="0.1"
+            android:textColor="#90A4AE"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Número de contacto"
+            android:layout_marginBottom="18dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="#2A4A72"
+            app:boxBackgroundColor="#172A45"
+            app:hintTextColor="#4FC3F7"
+            app:startIconTint="#4FC3F7">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#546E7A"
+                android:inputType="phone"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <!-- DIRECCIÓN -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DIRECCIÓN"
+            android:textSize="11sp"
+            android:letterSpacing="0.1"
+            android:textColor="#90A4AE"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Calle, ciudad, país"
+            android:layout_marginBottom="18dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="#2A4A72"
+            app:boxBackgroundColor="#172A45"
+            app:hintTextColor="#4FC3F7"
+            app:startIconDrawable="@drawable/ic_location_on"
+            app:startIconTint="#4FC3F7">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#546E7A"
+                android:inputType="textPostalAddress"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- CONTRASEÑA -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CONTRASEÑA"
+            android:textSize="11sp"
+            android:letterSpacing="0.1"
+            android:textColor="#90A4AE"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mínimo 8 caracteres"
+            android:layout_marginBottom="18dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="#2A4A72"
+            app:boxBackgroundColor="#172A45"
+            app:hintTextColor="#4FC3F7"
+            app:startIconDrawable="@drawable/ic_lock"
+            app:startIconTint="#4FC3F7"
+            app:endIconMode="password_toggle"
+            app:endIconTint="#546E7A">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#546E7A"
+                android:inputType="textPassword"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- CONFIRMAR CONTRASEÑA -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CONFIRMAR CONTRASEÑA"
+            android:textSize="11sp"
+            android:letterSpacing="0.1"
+            android:textColor="#90A4AE"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Repite tu contraseña"
+            android:layout_marginBottom="18dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="#2A4A72"
+            app:boxBackgroundColor="#172A45"
+            app:hintTextColor="#4FC3F7"
+            app:startIconDrawable="@drawable/ic_lock"
+            app:startIconTint="#4FC3F7"
+            app:endIconMode="password_toggle"
+            app:endIconTint="#546E7A">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#546E7A"
+                android:inputType="textPassword"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- ROL DE USUARIO -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ROL DE USUARIO"
+            android:textSize="11sp"
+            android:letterSpacing="0.1"
+            android:textColor="#90A4AE"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Selecciona un rol"
+            android:layout_marginBottom="18dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            app:boxStrokeColor="#2A4A72"
+            app:boxBackgroundColor="#172A45"
+            app:hintTextColor="#4FC3F7"
+            app:startIconDrawable="@drawable/ic_badge"
+            app:startIconTint="#4FC3F7">
+
+            <AutoCompleteTextView
+                android:id="@+id/spinnerRole"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#546E7A"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:inputType="none"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- FECHA DE NACIMIENTO -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FECHA DE NACIMIENTO"
+            android:textSize="11sp"
+            android:letterSpacing="0.1"
+            android:textColor="#90A4AE"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonFecha"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Seleccionar fecha de nacimiento"
+            android:textColor="#90A4AE"
+            android:textSize="14sp"
+            android:gravity="start|center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_marginBottom="18dp"
+            app:backgroundTint="#172A45"
+            app:cornerRadius="4dp"
+            app:strokeColor="#2A4A72"
+            app:strokeWidth="1dp"
+            app:icon="@drawable/ic_calendar_today"
+            app:iconTint="#4FC3F7"
+            app:iconGravity="start"
+            app:iconPadding="12dp"/>
+
+        <!-- GÉNERO -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GÉNERO"
+            android:textSize="11sp"
+            android:letterSpacing="0.1"
+            android:textColor="#90A4AE"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroupGenero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="28dp">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioMasculino"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Masculino"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                app:buttonTint="#4FC3F7"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioFemenino"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Femenino"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                app:buttonTint="#4FC3F7"/>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioBinario"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Otro"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                app:buttonTint="#4FC3F7"/>
+        </RadioGroup>
+
+        <!-- BOTÓN CREAR CUENTA -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonRegister"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:text="CREAR CUENTA"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:letterSpacing="0.08"
+            android:fontFamily="sans-serif-medium"
+            app:backgroundTint="#1565C0"
+            app:cornerRadius="12dp"
+            app:elevation="4dp"/>
+
+    </LinearLayout>
+</ScrollView>

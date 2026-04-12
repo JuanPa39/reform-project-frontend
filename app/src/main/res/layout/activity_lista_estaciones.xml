@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#1A2E4A"
+    android:padding="16dp">
+
+    <View
+        android:layout_width="48dp"
+        android:layout_height="3dp"
+        android:background="#4FC3F7"
+        android:layout_marginBottom="12dp"/>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Estaciones Registradas"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:gravity="start"
+        android:letterSpacing="0.02"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Red de estaciones activas"
+        android:textSize="12sp"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="20dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#2E5080"
+        android:layout_marginBottom="12dp"/>
+
+    <ListView
+        android:id="@+id/listViewEstaciones"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#1A2E4A"
+        android:cacheColorHint="#1A2E4A"
+        android:divider="#2E5080"
+        android:dividerHeight="1dp"
+        android:scrollbars="none"/>
+
+</LinearLayout>

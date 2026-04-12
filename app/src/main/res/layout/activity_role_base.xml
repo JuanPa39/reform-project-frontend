@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#1A2E4A"
+    android:padding="24dp">
+
+    <!-- Header con info usuario -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="#243B5E"
+        android:padding="16dp"
+        android:layout_marginBottom="28dp">
+
+        <LinearLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="#1E3A6E"
+            android:gravity="center"
+            android:layout_marginEnd="12dp">
+
+            <View
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="#4FC3F7"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="USUARIO ACTIVO"
+                android:textSize="10sp"
+                android:textColor="#FFFFFF"
+                android:letterSpacing="0.08"/>
+
+            <TextView
+                android:id="@+id/textViewEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Correo: "
+                android:textSize="14sp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Separador -->
+    <View
+        android:layout_width="48dp"
+        android:layout_height="3dp"
+        android:background="#4FC3F7"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ACCIONES"
+        android:textSize="11sp"
+        android:textColor="#FFFFFF"
+        android:letterSpacing="0.08"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Botones dinámicos -->
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Botón 1"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:backgroundTint="#131D2B"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Botón 2"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:backgroundTint="#131D2B"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Botón 3"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:backgroundTint="#131D2B"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Botón 4"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:backgroundTint="#131D2B"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Botón 5"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:backgroundTint="#131D2B"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"/>
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Botón 6"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:backgroundTint="#131D2B"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Botón 7"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:backgroundTint="#131D2B"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Botón 8"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:backgroundTint="#131D2B"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/button9"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Botón 9"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:backgroundTint="#131D2B"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/button10"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:backgroundTint="#131D2B"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"/>
+
+    <!-- Espaciador -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <!-- Separador inferior -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#2E5080"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="CERRAR SESIÓN"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:letterSpacing="0.05"
+        android:backgroundTint="#0D1B2A"/>
+
+</LinearLayout>

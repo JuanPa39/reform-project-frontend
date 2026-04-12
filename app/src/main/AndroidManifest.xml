@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <application
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.StationAdviser"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".Activities.NotificacionInconsistenciasActivity"
+            android:exported="false" /> <!-- LOGIN -->
+        <activity
+            android:name=".Activities.LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> <!-- PRINCIPALES -->
+        <activity android:name=".Activities.MainActivity" />
+        <activity android:name=".Activities.RoleBaseActivity" /> <!-- USUARIO -->
+        <activity android:name=".Activities.RegisterActivity" />
+        <activity android:name=".Activities.ResetPasswordActivity" /> <!-- ESTACIONES -->
+        <activity android:name=".Activities.RegistrarEstacionActivity" />
+        <activity android:name=".Activities.ListaEstacionesActivity" /> <!-- COMBUSTIBLE -->
+        <activity android:name=".Activities.RegistrarPrecioCombustibleActivity" />
+        <activity android:name=".Activities.ConsultarPrecioActivity" /> <!-- INVENTARIO Y VENTAS -->
+        <activity android:name=".Activities.RegistrarInventarioActivity" />
+        <activity android:name=".Activities.RegistrarVentaActivity" />
+        <activity android:name=".Activities.HistorialVentasActivity" />
+        <activity android:name=".Activities.ReporteMensualActivity" /> <!-- 👇 ESTA ES LA NUEVA (AQUÍ VA) -->
+        <activity android:name=".Activities.ConsultarDisponibilidadActivity" />
+        <activity android:name=".Activities.VerNormativasActivity" />
+        <activity android:name=".Activities.ConsultarNotificacionActivity" />
+    </application>
+
+</manifest>
