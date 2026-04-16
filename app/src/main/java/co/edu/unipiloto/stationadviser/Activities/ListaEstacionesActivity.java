@@ -2,7 +2,6 @@ package co.edu.unipiloto.stationadviser.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
@@ -49,6 +48,10 @@ public class ListaEstacionesActivity extends AppCompatActivity {
             intent.putExtra("estacion_nombre", estacion.getNombre());
             intent.putExtra("estacion_nit", estacion.getNit());
             intent.putExtra("estacion_ubicacion", estacion.getUbicacion());
+            if (estacion.getLatitud() != 0 || estacion.getLongitud() != 0) {
+                intent.putExtra("estacion_latitud", estacion.getLatitud());
+                intent.putExtra("estacion_longitud", estacion.getLongitud());
+            }
             startActivity(intent);
         });
     }
@@ -70,8 +73,12 @@ public class ListaEstacionesActivity extends AppCompatActivity {
                         datos.add("No hay estaciones registradas.");
                     } else {
                         for (EstacionResponse e : estacionesList) {
+                            String coordenadas = "";
+                            if (e.getLatitud() != 0 || e.getLongitud() != 0) {
+                                coordenadas = "\n📍 GPS: " + e.getLatitud() + ", " + e.getLongitud();
+                            }
                             datos.add("Nombre: " + e.getNombre() + "\nNIT: " + e.getNit() +
-                                    "\nUbicación: " + e.getUbicacion() + "\n(Toca para editar)");
+                                    "\nUbicación: " + e.getUbicacion() + coordenadas + "\n(Toca para editar)");
                         }
                     }
 
