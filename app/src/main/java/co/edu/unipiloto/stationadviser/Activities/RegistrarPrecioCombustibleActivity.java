@@ -3,6 +3,7 @@ package co.edu.unipiloto.stationadviser.Activities;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -77,7 +78,6 @@ public class RegistrarPrecioCombustibleActivity extends AppCompatActivity {
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerEstaciones.setAdapter(adapter);
 
-                    // Establecer el listener solo si hay estaciones
                     if (!estaciones.isEmpty()) {
                         estacionSeleccionadaId = estaciones.get(0).getId();
                         spinnerEstaciones.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -133,17 +133,23 @@ public class RegistrarPrecioCombustibleActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 mostrarLoading(false);
                 if (response.isSuccessful()) {
-                    Toast.makeText(RegistrarPrecioCombustibleActivity.this, "Precio registrado", Toast.LENGTH_SHORT).show();
-                    finish();
+                    // Mostrar diálogo con mensaje de notificación
+                    new AlertDialog.Builder(RegistrarPrecioCombustibleActivity.this)
+                            .setTitle("✅ Precio Registrado")
+                            .setMessage("El precio se ha registrado correctamente.\n\n📢 Se ha enviado una notificación a todos los usuarios sobre este cambio de precio.")
+                            .setPositiveButton("OK", (dialog, which) -> finish())
+                            .show();
                 } else {
-                    Toast.makeText(RegistrarPrecioCombustibleActivity.this, "Error al registrar precio", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegistrarPrecioCombustibleActivity.this,
+                            "Error al registrar precio", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 mostrarLoading(false);
-                Toast.makeText(RegistrarPrecioCombustibleActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegistrarPrecioCombustibleActivity.this,
+                        "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
