@@ -66,4 +66,8 @@ public interface ApiService {
     // Normativas
     @GET("normativas")
     Call<List<NormativaResponse>> getNormativas();
+
+    @GET("auditoria")
+    Call<List<AuditoriaResponse>> getAuditoria();
+
 }

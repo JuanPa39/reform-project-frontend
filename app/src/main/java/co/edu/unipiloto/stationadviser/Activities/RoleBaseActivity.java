@@ -178,6 +178,41 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button2.setOnClickListener(v -> startActivity(new Intent(this, ConsultarDisponibilidadActivity.class)));
                     break;
 
+                case "admin":
+                    button1.setVisibility(View.VISIBLE);
+                    button2.setVisibility(View.VISIBLE);
+                    button3.setVisibility(View.VISIBLE);
+                    button4.setVisibility(View.VISIBLE);
+                    button5.setVisibility(View.VISIBLE);
+                    button6.setVisibility(View.VISIBLE);
+                    button7.setVisibility(View.VISIBLE);
+                    button8.setVisibility(View.VISIBLE);
+                    button9.setVisibility(View.VISIBLE);
+                    button10.setVisibility(View.VISIBLE);
+
+                    button1.setText("Registrar estación");
+                    button2.setText("Ver estaciones");
+                    button3.setText("Registrar precio combustible");
+                    button4.setText("Ver precios combustible");
+                    button5.setText("Registrar inventario");
+                    button6.setText("Registrar venta");
+                    button7.setText("Historial ventas");
+                    button8.setText("Reporte mensual");
+                    button9.setText("Ver normativas");
+                    button10.setText("📊 TRAZABILIDAD / AUDITORÍA");
+
+                    button1.setOnClickListener(v -> startActivity(new Intent(this, RegistrarEstacionActivity.class)));
+                    button2.setOnClickListener(v -> startActivity(new Intent(this, ListaEstacionesActivity.class)));
+                    button3.setOnClickListener(v -> startActivity(new Intent(this, RegistrarPrecioCombustibleActivity.class)));
+                    button4.setOnClickListener(v -> startActivity(new Intent(this, ConsultarPrecioActivity.class)));
+                    button5.setOnClickListener(v -> startActivity(new Intent(this, RegistrarInventarioActivity.class)));
+                    button6.setOnClickListener(v -> startActivity(new Intent(this, RegistrarVentaActivity.class)));
+                    button7.setOnClickListener(v -> startActivity(new Intent(this, HistorialVentasActivity.class)));
+                    button8.setOnClickListener(v -> startActivity(new Intent(this, ReporteMensualActivity.class)));
+                    button9.setOnClickListener(v -> startActivity(new Intent(this, VerNormativasActivity.class)));
+                    button10.setOnClickListener(v -> startActivity(new Intent(this, TrazabilidadActivity.class)));
+                    break;
+
                 default:
                     Log.e(TAG, "Rol desconocido: " + userRole);
                     button1.setVisibility(View.VISIBLE);
