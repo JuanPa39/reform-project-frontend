@@ -75,5 +75,9 @@ public interface ApiService {
             @Query("fechaInicio") String fechaInicio,
             @Query("fechaFin") String fechaFin
     );
+    @GET("usuarios")
+    Call<List<UsuarioResponse>> getUsuarios();
 
+    @PUT("admin/usuarios/{usuarioId}/estacion")
+    Call<Void> asignarEstacion(@Path("usuarioId") Long usuarioId, @Body AsignarEstacionRequest request);
 }

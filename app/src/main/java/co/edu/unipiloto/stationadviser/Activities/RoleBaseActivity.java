@@ -15,7 +15,7 @@ import co.edu.unipiloto.stationadviser.network.TokenManager;
 public class RoleBaseActivity extends AppCompatActivity {
 
     private static final String TAG = "RoleBaseActivity";
-    private Button button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, buttonLogout;
+    private Button button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, buttonLogout;
     private TextView textViewEmail;
     private String userEmail;
     private String userRole;
@@ -52,6 +52,7 @@ public class RoleBaseActivity extends AppCompatActivity {
         button8 = findViewById(R.id.button8);
         button9 = findViewById(R.id.button9);
         button10 = findViewById(R.id.button10);
+        button11 = findViewById(R.id.button11);
         buttonLogout = findViewById(R.id.buttonLogout);
         textViewEmail = findViewById(R.id.textViewEmail);
 
@@ -88,6 +89,7 @@ public class RoleBaseActivity extends AppCompatActivity {
         button8.setVisibility(View.GONE);
         button9.setVisibility(View.GONE);
         button10.setVisibility(View.GONE);
+        button11.setVisibility(View.GONE);
 
         Log.d(TAG, "Configurando botones para rol: " + userRole);
 
@@ -192,28 +194,32 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button8.setVisibility(View.VISIBLE);
                     button9.setVisibility(View.VISIBLE);
                     button10.setVisibility(View.VISIBLE);
+                    button11.setVisibility(View.VISIBLE);
 
-                    button1.setText("Registrar estación");
-                    button2.setText("Ver estaciones");
-                    button3.setText("Registrar precio combustible");
-                    button4.setText("Ver precios combustible");
-                    button5.setText("Registrar inventario");
-                    button6.setText("Registrar venta");
-                    button7.setText("Historial ventas");
-                    button8.setText("Reporte mensual");
-                    button9.setText("📊 Reporte consumo por zona");  // ← NUEVO
+                    button1.setText("👤 Asignar estación a empleado");  // ← NUEVO
+                    button2.setText("Registrar estación");
+                    button3.setText("Ver estaciones");
+                    button4.setText("Registrar precio combustible");
+                    button5.setText("Ver precios combustible");
+                    button6.setText("Registrar inventario");
+                    button7.setText("Registrar venta");
+                    button8.setText("Historial ventas");
+                    button9.setText("Reporte mensual");
                     button10.setText("📋 TRAZABILIDAD / AUDITORÍA");
+                    button11.setText("📊 Reporte consumo por zona");
 
-                    button1.setOnClickListener(v -> startActivity(new Intent(this, RegistrarEstacionActivity.class)));
-                    button2.setOnClickListener(v -> startActivity(new Intent(this, ListaEstacionesActivity.class)));
-                    button3.setOnClickListener(v -> startActivity(new Intent(this, RegistrarPrecioCombustibleActivity.class)));
-                    button4.setOnClickListener(v -> startActivity(new Intent(this, ConsultarPrecioActivity.class)));
-                    button5.setOnClickListener(v -> startActivity(new Intent(this, RegistrarInventarioActivity.class)));
-                    button6.setOnClickListener(v -> startActivity(new Intent(this, RegistrarVentaActivity.class)));
-                    button7.setOnClickListener(v -> startActivity(new Intent(this, HistorialVentasActivity.class)));
-                    button8.setOnClickListener(v -> startActivity(new Intent(this, ReporteMensualActivity.class)));
-                    button9.setOnClickListener(v -> startActivity(new Intent(this, ReporteConsumoZonaActivity.class)));  // ← NUEVO
+                    button1.setOnClickListener(v -> startActivity(new Intent(this, AsignarEstacionActivity.class)));  // ← NUEVO
+                    button2.setOnClickListener(v -> startActivity(new Intent(this, RegistrarEstacionActivity.class)));
+                    button3.setOnClickListener(v -> startActivity(new Intent(this, ListaEstacionesActivity.class)));
+                    button4.setOnClickListener(v -> startActivity(new Intent(this, RegistrarPrecioCombustibleActivity.class)));
+                    button5.setOnClickListener(v -> startActivity(new Intent(this, ConsultarPrecioActivity.class)));
+                    button6.setOnClickListener(v -> startActivity(new Intent(this, RegistrarInventarioActivity.class)));
+                    button7.setOnClickListener(v -> startActivity(new Intent(this, RegistrarVentaActivity.class)));
+                    button8.setOnClickListener(v -> startActivity(new Intent(this, HistorialVentasActivity.class)));
+                    button9.setOnClickListener(v -> startActivity(new Intent(this, ReporteMensualActivity.class)));
                     button10.setOnClickListener(v -> startActivity(new Intent(this, TrazabilidadActivity.class)));
+                    button11.setOnClickListener(v -> startActivity(new Intent(this, ReporteConsumoZonaActivity.class)));  // ← NUEVO
+
                     break;
 
                 default:

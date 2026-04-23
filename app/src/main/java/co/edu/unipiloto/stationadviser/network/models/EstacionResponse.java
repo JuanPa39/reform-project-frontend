@@ -9,6 +9,7 @@ public class EstacionResponse {
     private double latitud;
     private double longitud;
 
+    private String zona;
     public EstacionResponse() {}
 
     public Long getId() { return id; }
@@ -31,4 +32,7 @@ public class EstacionResponse {
 
     public double getLongitud() { return longitud; }
     public void setLongitud(double longitud) { this.longitud = longitud; }
+
+    public String getZona() { return zona; }
+    public void setZona(String zona) { this.zona = zona; }
 }

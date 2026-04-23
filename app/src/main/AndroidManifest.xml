@@ -50,6 +50,7 @@
         <activity android:name=".Activities.ConsultarDisponibilidadActivity" />
         <activity android:name=".Activities.VerNormativasActivity" />
         <activity android:name=".Activities.ConsultarNotificacionActivity" />
+        <activity android:name=".Activities.AsignarEstacionActivity" />
     </application>
 
 </manifest>
