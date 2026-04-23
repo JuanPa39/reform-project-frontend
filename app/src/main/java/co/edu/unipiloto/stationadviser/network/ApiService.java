@@ -75,8 +75,22 @@ public interface ApiService {
             @Query("fechaInicio") String fechaInicio,
             @Query("fechaFin") String fechaFin
     );
+
+    // Usuarios
     @GET("usuarios")
     Call<List<UsuarioResponse>> getUsuarios();
+
+    @GET("usuarios")
+    Call<List<UsuarioResponse>> getUsuariosPorRol(@Query("rol") String rol);
+
+    @GET("usuarios/perfil")
+    Call<UsuarioResponse> getMiPerfil();
+
+    @PUT("usuarios/perfil")
+    Call<UsuarioResponse> actualizarMiPerfil(@Body ActualizarUsuarioRequest request);
+
+    @PUT("usuarios/{id}")
+    Call<UsuarioResponse> actualizarUsuario(@Path("id") Long id, @Body ActualizarUsuarioRequest request);
 
     @PUT("admin/usuarios/{usuarioId}/estacion")
     Call<Void> asignarEstacion(@Path("usuarioId") Long usuarioId, @Body AsignarEstacionRequest request);

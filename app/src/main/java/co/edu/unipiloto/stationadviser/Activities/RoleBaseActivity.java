@@ -3,11 +3,14 @@ package co.edu.unipiloto.stationadviser.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import co.edu.unipiloto.stationadviser.R;
 import co.edu.unipiloto.stationadviser.network.TokenManager;
@@ -25,6 +28,9 @@ public class RoleBaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_role_base);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         tokenManager = new TokenManager(this);
 
@@ -110,7 +116,7 @@ public class RoleBaseActivity extends AppCompatActivity {
                 case "empleado de estación":
                 case "empleado de estacion":
                     button1.setVisibility(View.VISIBLE);
-                    button2.setVisibility(View.VISIBLE);
+                     button2.setVisibility(View.VISIBLE);
                     button3.setVisibility(View.VISIBLE);
                     button4.setVisibility(View.VISIBLE);
                     button5.setVisibility(View.VISIBLE);
@@ -229,5 +235,20 @@ public class RoleBaseActivity extends AppCompatActivity {
                     break;
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_perfil) {
+            startActivity(new Intent(this, PerfilActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
