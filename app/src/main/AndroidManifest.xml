@@ -19,6 +19,9 @@
         android:theme="@style/Theme.StationAdviser"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.ReporteConsumoZonaActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.TrazabilidadActivity"
             android:exported="false" />
         <activity

@@ -127,7 +127,7 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button7.setText("Registrar venta");
                     button8.setText("Historial ventas");
                     button9.setText("Reporte mensual");
-                    button10.setText("Ver normativas");
+                    button10.setText("📊 Reporte consumo por zona");  // ← CAMBIADO
 
                     button1.setOnClickListener(v -> startActivity(new Intent(this, RegistrarEstacionActivity.class)));
                     button2.setOnClickListener(v -> startActivity(new Intent(this, ConsultarNotificacionActivity.class)));
@@ -138,7 +138,7 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button7.setOnClickListener(v -> startActivity(new Intent(this, RegistrarVentaActivity.class)));
                     button8.setOnClickListener(v -> startActivity(new Intent(this, HistorialVentasActivity.class)));
                     button9.setOnClickListener(v -> startActivity(new Intent(this, ReporteMensualActivity.class)));
-                    button10.setOnClickListener(v -> startActivity(new Intent(this, VerNormativasActivity.class)));
+                    button10.setOnClickListener(v -> startActivity(new Intent(this, ReporteConsumoZonaActivity.class)));  // ← NUEVO
                     break;
 
                 case "equipo técnico":
@@ -159,14 +159,17 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button2.setVisibility(View.VISIBLE);
                     button3.setVisibility(View.VISIBLE);
                     button4.setVisibility(View.VISIBLE);
+                    button5.setVisibility(View.VISIBLE);  // ← AGREGAR
                     button1.setText("Ver normativas");
                     button2.setText("Enviar notificación de inconsistencias");
                     button3.setText("Registrar multa");
-                    button4.setText("Generar reporte");
+                    button4.setText("Generar reporte mensual");
+                    button5.setText("📊 Reporte consumo por zona");  // ← NUEVO
                     button1.setOnClickListener(v -> startActivity(new Intent(this, VerNormativasActivity.class)));
                     button2.setOnClickListener(v -> startActivity(new Intent(this, NotificacionInconsistenciasActivity.class)));
                     button3.setOnClickListener(v -> Toast.makeText(this, "Multas (próximamente)", Toast.LENGTH_SHORT).show());
-                    button4.setOnClickListener(v -> Toast.makeText(this, "Reportes (próximamente)", Toast.LENGTH_SHORT).show());
+                    button4.setOnClickListener(v -> startActivity(new Intent(this, ReporteMensualActivity.class)));
+                    button5.setOnClickListener(v -> startActivity(new Intent(this, ReporteConsumoZonaActivity.class)));  // ← NUEVO
                     break;
 
                 case "distribuidor":
@@ -198,8 +201,8 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button6.setText("Registrar venta");
                     button7.setText("Historial ventas");
                     button8.setText("Reporte mensual");
-                    button9.setText("Ver normativas");
-                    button10.setText("📊 TRAZABILIDAD / AUDITORÍA");
+                    button9.setText("📊 Reporte consumo por zona");  // ← NUEVO
+                    button10.setText("📋 TRAZABILIDAD / AUDITORÍA");
 
                     button1.setOnClickListener(v -> startActivity(new Intent(this, RegistrarEstacionActivity.class)));
                     button2.setOnClickListener(v -> startActivity(new Intent(this, ListaEstacionesActivity.class)));
@@ -209,7 +212,7 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button6.setOnClickListener(v -> startActivity(new Intent(this, RegistrarVentaActivity.class)));
                     button7.setOnClickListener(v -> startActivity(new Intent(this, HistorialVentasActivity.class)));
                     button8.setOnClickListener(v -> startActivity(new Intent(this, ReporteMensualActivity.class)));
-                    button9.setOnClickListener(v -> startActivity(new Intent(this, VerNormativasActivity.class)));
+                    button9.setOnClickListener(v -> startActivity(new Intent(this, ReporteConsumoZonaActivity.class)));  // ← NUEVO
                     button10.setOnClickListener(v -> startActivity(new Intent(this, TrazabilidadActivity.class)));
                     break;
 

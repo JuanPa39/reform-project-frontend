@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#1A2E4A">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reporte de Consumo por Zona"
+        android:textSize="22sp"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Seleccionar Zona"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="8dp"/>
+
+    <Spinner
+        android:id="@+id/spinnerZona"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/buttonConsultar"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="CONSULTAR REPORTE"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#2196F3"
+        android:layout_marginBottom="16dp"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/textResultado"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:background="#0D1B2A"
+        android:padding="12dp"
+        android:scrollbars="vertical"
+        android:typeface="monospace"/>
+
+</LinearLayout>

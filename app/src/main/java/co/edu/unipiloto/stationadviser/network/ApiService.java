@@ -70,4 +70,10 @@ public interface ApiService {
     @GET("auditoria")
     Call<List<AuditoriaResponse>> getAuditoria();
 
+    @GET("reportes/consumo-por-zona")
+    Call<List<ReporteZonaResponse>> getConsumoPorZona(
+            @Query("fechaInicio") String fechaInicio,
+            @Query("fechaFin") String fechaFin
+    );
+
 }
