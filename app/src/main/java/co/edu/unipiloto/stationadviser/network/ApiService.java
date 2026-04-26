@@ -57,6 +57,11 @@ public interface ApiService {
     @POST("ventas")
     Call<VentaResponse> registrarVenta(@Body VentaRequest request);  // ← CAMBIADO
 
+    // Factura
+    @Streaming
+    @GET("facturas/venta/{ventaId}")
+    Call<ResponseBody> descargarFacturaPdf(@Path("ventaId") Long ventaId);
+
     // Inventario
     @POST("inventario")
     Call<InventarioResponse> registrarInventario(@Body InventarioRequest request);
