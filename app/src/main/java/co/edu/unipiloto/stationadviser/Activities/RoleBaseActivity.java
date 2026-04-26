@@ -137,6 +137,9 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button2.setText("Consultar disponibilidad");
                     button1.setOnClickListener(v -> startActivity(new Intent(this, ConsultarPrecioActivity.class)));
                     button2.setOnClickListener(v -> startActivity(new Intent(this, ConsultarDisponibilidadActivity.class)));
+                    button3.setVisibility(View.VISIBLE);
+                    button3.setText("🧾 Consultar mi factura");
+                    button3.setOnClickListener(v -> startActivity(new Intent(this, Buscarfacturaactivity.class)));
                     break;
 
                 case "empleado de estación":
