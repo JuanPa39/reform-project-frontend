@@ -2,16 +2,16 @@ package co.edu.unipiloto.stationadviser.network.models;
 
 public class VentaRequest {
     private String tipoCombustible;
-    private double cantidad;  // En galones
+    private double cantidad;
+    private String tipoVehiculo;  // ← AGREGAR
 
-    public VentaRequest(String tipoCombustible, double cantidad) {
+    public VentaRequest(String tipoCombustible, double cantidad, String tipoVehiculo) {
         this.tipoCombustible = tipoCombustible;
         this.cantidad = cantidad;
+        this.tipoVehiculo = tipoVehiculo;
     }
 
     public String getTipoCombustible() { return tipoCombustible; }
-    public void setTipoCombustible(String tipoCombustible) { this.tipoCombustible = tipoCombustible; }
-
     public double getCantidad() { return cantidad; }
-    public void setCantidad(double cantidad) { this.cantidad = cantidad; }
+    public String getTipoVehiculo() { return tipoVehiculo; }
 }

@@ -5,9 +5,11 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -31,7 +33,7 @@ public class RegistrarEstacionActivity extends AppCompatActivity {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
 
-    private EditText editTextNombre, editTextNit, editTextUbicacion, editTextLatitud, editTextLongitud;
+    private EditText editTextNombre, editTextNit, editTextZona, editTextUbicacion, editTextLatitud, editTextLongitud;
     private Button buttonObtenerUbicacion, buttonRegistrar;
     private TextView textViewMensaje, textViewTitulo;
     private ProgressBar progressBar;
@@ -54,6 +56,7 @@ public class RegistrarEstacionActivity extends AppCompatActivity {
 
         editTextNombre = findViewById(R.id.editTextNombre);
         editTextNit = findViewById(R.id.editTextNit);
+        editTextZona = findViewById(R.id.editTextZona);
         editTextUbicacion = findViewById(R.id.editTextUbicacion);
         editTextLatitud = findViewById(R.id.editTextLatitud);
         editTextLongitud = findViewById(R.id.editTextLongitud);
@@ -131,11 +134,12 @@ public class RegistrarEstacionActivity extends AppCompatActivity {
     private void registrarEstacion() {
         String nombre = editTextNombre.getText().toString().trim();
         String nit = editTextNit.getText().toString().trim();
+        String zona = editTextZona.getText().toString().trim();
         String ubicacion = editTextUbicacion.getText().toString().trim();
         String latitudStr = editTextLatitud.getText().toString().trim();
         String longitudStr = editTextLongitud.getText().toString().trim();
 
-        if (nombre.isEmpty() || nit.isEmpty() || ubicacion.isEmpty()) {
+        if (nombre.isEmpty() || nit.isEmpty() || zona.isEmpty() || ubicacion.isEmpty()) {
             textViewMensaje.setText("Todos los campos son obligatorios");
             return;
         }
@@ -149,6 +153,8 @@ public class RegistrarEstacionActivity extends AppCompatActivity {
         mostrarLoading(true);
 
         EstacionRequest request = new EstacionRequest(nombre, nit, ubicacion, latitud, longitud);
+        request.setZona(zona);  // ← IMPORTANTE: asignar zona
+
         Call<EstacionResponse> call = apiService.crearEstacion(request);
         call.enqueue(new Callback<EstacionResponse>() {
             @Override
@@ -159,7 +165,17 @@ public class RegistrarEstacionActivity extends AppCompatActivity {
                     limpiarCampos();
                     finish();
                 } else {
-                    textViewMensaje.setText("Error: El NIT ya existe o hubo un problema");
+                    String error = "Error: ";
+                    try {
+                        if (response.errorBody() != null) {
+                            error += response.errorBody().string();
+                        } else {
+                            error += "El NIT ya existe o hubo un problema";
+                        }
+                    } catch (Exception e) {
+                        error += "Error desconocido";
+                    }
+                    textViewMensaje.setText(error);
                 }
             }
 
@@ -174,11 +190,12 @@ public class RegistrarEstacionActivity extends AppCompatActivity {
     private void actualizarEstacion() {
         String nombre = editTextNombre.getText().toString().trim();
         String nit = editTextNit.getText().toString().trim();
+        String zona = editTextZona.getText().toString().trim();
         String ubicacion = editTextUbicacion.getText().toString().trim();
         String latitudStr = editTextLatitud.getText().toString().trim();
         String longitudStr = editTextLongitud.getText().toString().trim();
 
-        if (nombre.isEmpty() || nit.isEmpty() || ubicacion.isEmpty()) {
+        if (nombre.isEmpty() || nit.isEmpty() || zona.isEmpty() || ubicacion.isEmpty()) {
             textViewMensaje.setText("Todos los campos son obligatorios");
             return;
         }
@@ -192,6 +209,8 @@ public class RegistrarEstacionActivity extends AppCompatActivity {
         mostrarLoading(true);
 
         EstacionRequest request = new EstacionRequest(nombre, nit, ubicacion, latitud, longitud);
+        request.setZona(zona);
+
         Call<EstacionResponse> call = apiService.actualizarEstacion(estacionId, request);
         call.enqueue(new Callback<EstacionResponse>() {
             @Override
@@ -216,6 +235,7 @@ public class RegistrarEstacionActivity extends AppCompatActivity {
     private void limpiarCampos() {
         editTextNombre.setText("");
         editTextNit.setText("");
+        editTextZona.setText("");
         editTextUbicacion.setText("");
         editTextLatitud.setText("");
         editTextLongitud.setText("");

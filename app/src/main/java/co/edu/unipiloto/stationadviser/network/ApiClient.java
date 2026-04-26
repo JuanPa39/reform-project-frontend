@@ -17,7 +17,6 @@ public class ApiClient {
 
     public static Retrofit getClient() {
         if (retrofit == null) {
-            // Interceptor para logs (útil para depuración)
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -32,6 +31,22 @@ public class ApiClient {
                     .build();
         }
         return retrofit;
+    }
+
+    // ✅ AGREGAR ESTE MÉTODO
+    public static Retrofit getClientWithoutToken() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .build();
+
+        return new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
     }
 
     public static Retrofit getClientWithToken(String token) {

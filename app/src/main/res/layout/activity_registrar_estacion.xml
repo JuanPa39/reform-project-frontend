@@ -87,6 +87,25 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="ZONA"
+            android:textSize="11sp"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/editTextZona"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="Ej: Centro, Norte, Sur, Este, Oeste"
+            android:textColor="#FFFFFF"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="#243B5E"
+            android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="UBICACIÓN (DIRECCIÓN)"
             android:textSize="11sp"
             android:textColor="#FFFFFF"

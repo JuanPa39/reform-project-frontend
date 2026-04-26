@@ -1,6 +1,7 @@
 package co.edu.unipiloto.stationadviser.network;
 
 import co.edu.unipiloto.stationadviser.network.models.*;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -94,4 +95,9 @@ public interface ApiService {
 
     @PUT("admin/usuarios/{usuarioId}/estacion")
     Call<Void> asignarEstacion(@Path("usuarioId") Long usuarioId, @Body AsignarEstacionRequest request);
+    @GET("reportes/ventas/pdf")
+    Call<ResponseBody> exportarReportePDF(@Query("fechaInicio") String fechaInicio, @Query("fechaFin") String fechaFin);
+
+    @GET("reportes/ventas/excel")
+    Call<ResponseBody> exportarReporteExcel(@Query("fechaInicio") String fechaInicio, @Query("fechaFin") String fechaFin);
 }

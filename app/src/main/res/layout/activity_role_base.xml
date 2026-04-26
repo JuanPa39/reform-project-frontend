@@ -210,6 +210,26 @@
                 android:layout_marginBottom="10dp"
                 android:visibility="gone"/>
 
+            <Button
+                android:id="@+id/button12"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:backgroundTint="#131D2B"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/button13"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:backgroundTint="#131D2B"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone"/>
+
         </LinearLayout>
     </ScrollView>
 

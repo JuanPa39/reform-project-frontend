@@ -15,7 +15,7 @@ import retrofit2.Response;
 
 public class RegistrarVentaActivity extends AppCompatActivity {
 
-    private Spinner spinnerTipo;
+    private Spinner spinnerTipo, spinnerTipoVehiculo;
     private EditText editGalones;
     private TextView textPrecioActual;
     private Button buttonGuardar;
@@ -33,21 +33,30 @@ public class RegistrarVentaActivity extends AppCompatActivity {
         apiService = ApiClient.getClientWithToken(tokenManager.getToken()).create(ApiService.class);
 
         spinnerTipo = findViewById(R.id.spinnerTipo);
+        spinnerTipoVehiculo = findViewById(R.id.spinnerTipoVehiculo);
         editGalones = findViewById(R.id.editGalones);
         textPrecioActual = findViewById(R.id.textPrecioActual);
         buttonGuardar = findViewById(R.id.buttonGuardar);
         progressBar = findViewById(R.id.progressBar);
 
+        // Tipos de combustible
         String[] tipos = {"ACPM", "Gasolina Corriente", "Gasolina Extra"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+        ArrayAdapter<String> adapterCombustible = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, tipos);
-        spinnerTipo.setAdapter(adapter);
+        spinnerTipo.setAdapter(adapterCombustible);
+
+        // Tipos de vehículo
+        String[] tiposVehiculo = {"Particular", "Taxi", "Servicio Público (Bus)", "Camión de carga", "Oficial", "Diplomático", "Moto"};
+        ArrayAdapter<String> adapterVehiculo = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, tiposVehiculo);
+        spinnerTipoVehiculo.setAdapter(adapterVehiculo);
 
         buttonGuardar.setOnClickListener(v -> registrarVenta());
     }
 
     private void registrarVenta() {
         String tipo = spinnerTipo.getSelectedItem().toString();
+        String tipoVehiculo = spinnerTipoVehiculo.getSelectedItem().toString();
         String galonesStr = editGalones.getText().toString();
 
         if (galonesStr.isEmpty()) {
@@ -58,7 +67,7 @@ public class RegistrarVentaActivity extends AppCompatActivity {
         double galones = Double.parseDouble(galonesStr);
         mostrarLoading(true);
 
-        VentaRequest request = new VentaRequest(tipo, galones);
+        VentaRequest request = new VentaRequest(tipo, galones, tipoVehiculo);
         Call<VentaResponse> call = apiService.registrarVenta(request);
 
         call.enqueue(new Callback<VentaResponse>() {
