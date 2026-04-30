@@ -1,12 +1,16 @@
 package co.edu.unipiloto.stationadviser.Activities;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
+import java.util.ArrayList;
+import java.util.List;
 import co.edu.unipiloto.stationadviser.R;
 import co.edu.unipiloto.stationadviser.network.ApiClient;
 import co.edu.unipiloto.stationadviser.network.ApiService;
 import co.edu.unipiloto.stationadviser.network.TokenManager;
+import co.edu.unipiloto.stationadviser.network.models.PrecioResponse;
 import co.edu.unipiloto.stationadviser.network.models.VentaRequest;
 import co.edu.unipiloto.stationadviser.network.models.VentaResponse;
 import retrofit2.Call;
@@ -24,6 +28,9 @@ public class RegistrarVentaActivity extends AppCompatActivity {
     private ApiService apiService;
     private TokenManager tokenManager;
 
+    // ← NUEVO: guarda los nombres reales de la BD
+    private List<String> nombresCombustible = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,30 +39,65 @@ public class RegistrarVentaActivity extends AppCompatActivity {
         tokenManager = new TokenManager(this);
         apiService = ApiClient.getClientWithToken(tokenManager.getToken()).create(ApiService.class);
 
-        spinnerTipo = findViewById(R.id.spinnerTipo);
+        spinnerTipo         = findViewById(R.id.spinnerTipo);
         spinnerTipoVehiculo = findViewById(R.id.spinnerTipoVehiculo);
-        editGalones = findViewById(R.id.editGalones);
-        textPrecioActual = findViewById(R.id.textPrecioActual);
-        buttonGuardar = findViewById(R.id.buttonGuardar);
-        progressBar = findViewById(R.id.progressBar);
+        editGalones         = findViewById(R.id.editGalones);
+        textPrecioActual    = findViewById(R.id.textPrecioActual);
+        buttonGuardar       = findViewById(R.id.buttonGuardar);
+        progressBar         = findViewById(R.id.progressBar);
 
-        // Tipos de combustible
-        String[] tipos = {"ACPM", "Gasolina Corriente", "Gasolina Extra"};
-        ArrayAdapter<String> adapterCombustible = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item, tipos);
-        spinnerTipo.setAdapter(adapterCombustible);
-
-        // Tipos de vehículo
-        String[] tiposVehiculo = {"Particular", "Taxi", "Servicio Público (Bus)", "Camión de carga", "Oficial", "Diplomático", "Moto"};
+        // Tipos de vehículo — igual que antes
+        String[] tiposVehiculo = {"Particular", "Taxi", "Servicio Público (Bus)",
+                "Camión de carga", "Oficial", "Diplomático", "Moto"};
         ArrayAdapter<String> adapterVehiculo = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, tiposVehiculo);
         spinnerTipoVehiculo.setAdapter(adapterVehiculo);
 
+        // ← CAMBIO: carga combustibles desde el backend en vez de hardcodear
+        cargarCombustiblesDesdePrecios();
+
         buttonGuardar.setOnClickListener(v -> registrarVenta());
     }
 
+    // ← NUEVO método
+    private void cargarCombustiblesDesdePrecios() {
+        apiService.getPrecios().enqueue(new Callback<List<PrecioResponse>>() {
+            @Override
+            public void onResponse(Call<List<PrecioResponse>> call,
+                                   Response<List<PrecioResponse>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    nombresCombustible.clear();
+                    for (PrecioResponse precio : response.body()) {
+                        String nombre = precio.getCombustibleNombre();
+                        if (nombre != null && !nombresCombustible.contains(nombre)) {
+                            nombresCombustible.add(nombre);
+                        }
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                            RegistrarVentaActivity.this,
+                            android.R.layout.simple_spinner_dropdown_item,
+                            nombresCombustible);
+                    spinnerTipo.setAdapter(adapter);
+                } else {
+                    Toast.makeText(RegistrarVentaActivity.this,
+                            "Error al cargar combustibles", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PrecioResponse>> call, Throwable t) {
+                Toast.makeText(RegistrarVentaActivity.this,
+                        "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void registrarVenta() {
-        String tipo = spinnerTipo.getSelectedItem().toString();
+        // ← CAMBIO: toma el nombre exacto de la lista dinámica
+        String tipo = nombresCombustible.isEmpty()
+                ? spinnerTipo.getSelectedItem().toString()
+                : nombresCombustible.get(spinnerTipo.getSelectedItemPosition());
+
         String tipoVehiculo = spinnerTipoVehiculo.getSelectedItem().toString();
         String galonesStr = editGalones.getText().toString();
 
@@ -70,6 +112,7 @@ public class RegistrarVentaActivity extends AppCompatActivity {
         VentaRequest request = new VentaRequest(tipo, galones, tipoVehiculo);
         Call<VentaResponse> call = apiService.registrarVenta(request);
 
+        // — igual que antes desde aquí —
         call.enqueue(new Callback<VentaResponse>() {
             @Override
             public void onResponse(Call<VentaResponse> call, Response<VentaResponse> response) {
@@ -77,24 +120,18 @@ public class RegistrarVentaActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     VentaResponse data = response.body();
                     String mensaje = String.format("✅ Venta registrada!\n" +
-                                    "Estación: %s\n" +
-                                    "Combustible: %s\n" +
-                                    "Galones: %.2f\n" +
-                                    "Precio unitario: $%.2f\n" +
-                                    "Total: $%.2f\n" +
-                                    "Fecha: %s",
+                                    "Estación: %s\nCombustible: %s\n" +
+                                    "Galones: %.2f\nPrecio unitario: $%.2f\n" +
+                                    "Total: $%.2f\nFecha: %s",
                             data.getEstacionNombre(), data.getCombustibleNombre(),
                             data.getCantidad(), data.getPrecioUnitario(),
                             data.getMontoTotal(), data.getFecha());
-
                     Toast.makeText(RegistrarVentaActivity.this, mensaje, Toast.LENGTH_LONG).show();
                     editGalones.setText("");
                 } else {
                     String error = "Error al registrar venta";
                     try {
-                        if (response.errorBody() != null) {
-                            error = response.errorBody().string();
-                        }
+                        if (response.errorBody() != null) error = response.errorBody().string();
                     } catch (Exception e) {}
                     Toast.makeText(RegistrarVentaActivity.this, error, Toast.LENGTH_SHORT).show();
                 }
@@ -103,13 +140,14 @@ public class RegistrarVentaActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<VentaResponse> call, Throwable t) {
                 mostrarLoading(false);
-                Toast.makeText(RegistrarVentaActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegistrarVentaActivity.this,
+                        "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void mostrarLoading(boolean mostrar) {
-        progressBar.setVisibility(mostrar ? android.view.View.VISIBLE : android.view.View.GONE);
+        progressBar.setVisibility(mostrar ? View.VISIBLE : View.GONE);
         buttonGuardar.setEnabled(!mostrar);
     }
 }

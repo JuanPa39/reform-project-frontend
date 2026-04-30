@@ -12,7 +12,11 @@
         android:background="#0D1B2A"
         android:elevation="4dp"
         android:title="Station Adviser"
-        android:titleTextColor="#FFFFFF"/>
+        android:titleTextColor="#FFFFFF"
+        app:titleTextColor="#FFFFFF"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+        xmlns:app="http://schemas.android.com/apk/res-auto"/>
 
     <ScrollView
         android:layout_width="match_parent"

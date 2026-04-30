@@ -12,6 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.graphics.Color;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -156,6 +159,7 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button10.setVisibility(View.VISIBLE);
                     button11.setVisibility(View.VISIBLE);
                     button12.setVisibility(View.VISIBLE);
+                    button13.setVisibility(View.VISIBLE);
 
                     button1.setText("Registrar estación");
                     button2.setText("Consultar notificaciones");
@@ -169,6 +173,7 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button10.setText("📊 Reporte consumo por zona");
                     button11.setText("📄 Exportar Reporte PDF");
                     button12.setText("📊 Exportar Reporte Excel");
+                    button13.setText("📤 Compartir Reporte");
 
                     button1.setOnClickListener(v -> startActivity(new Intent(this, RegistrarEstacionActivity.class)));
                     button2.setOnClickListener(v -> startActivity(new Intent(this, ConsultarNotificacionActivity.class)));
@@ -182,6 +187,7 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button10.setOnClickListener(v -> startActivity(new Intent(this, ReporteConsumoZonaActivity.class)));
                     button11.setOnClickListener(v -> exportarReporte("pdf"));
                     button12.setOnClickListener(v -> exportarReporte("excel"));
+                    button13.setOnClickListener(v -> compartirReporte());
                     break;
 
                 case "equipo técnico":
@@ -280,9 +286,12 @@ public class RoleBaseActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        MenuItem item = menu.findItem(R.id.action_perfil);
+        SpannableString title = new SpannableString(item.getTitle());
+        title.setSpan(new ForegroundColorSpan(Color.WHITE), 0, title.length(), 0);
+        item.setTitle(title);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_perfil) {
@@ -346,5 +355,27 @@ public class RoleBaseActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(RoleBaseActivity.this, "Error al guardar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void compartirReporte() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Reporte Station Adviser");
+        shareIntent.putExtra(Intent.EXTRA_TEXT,
+                "📊 Station Adviser - Reporte de Gestión de Combustibles\n" +
+                        "=====================================\n" +
+                        "👤 Usuario: " + userEmail + "\n" +
+                        "🎭 Rol: " + userRole + "\n" +
+                        "📅 Fecha: " + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date()) + "\n" +
+                        "=====================================\n" +
+                        "✅ Funcionalidades disponibles:\n" +
+                        "   • Registrar ventas\n" +
+                        "   • Control de inventario\n" +
+                        "   • Gestión de precios\n" +
+                        "   • Reportes PDF/Excel\n" +
+                        "   • Trazabilidad completa\n" +
+                        "=====================================\n" +
+                        "📱 Generado desde Station Adviser App");
+        startActivity(Intent.createChooser(shareIntent, "Compartir vía"));
     }
 }
