@@ -1,0 +1,225 @@
+package co.edu.unipiloto.stationadviser.Activities;
+
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import java.util.ArrayList;
+import java.util.List;
+import co.edu.unipiloto.stationadviser.R;
+import co.edu.unipiloto.stationadviser.network.ApiClient;
+import co.edu.unipiloto.stationadviser.network.ApiService;
+import co.edu.unipiloto.stationadviser.network.TokenManager;
+import co.edu.unipiloto.stationadviser.network.models.EstacionResponse;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import java.util.Collections;
+
+public class BuscarEstacionActivity extends AppCompatActivity {
+
+    private static final int REQUEST_LOCATION = 44;
+
+    private RecyclerView recyclerView;
+    private ProgressBar progressBar;
+    private TextView tvVacio;
+    private ApiService apiService;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private List<EstacionResponse> estaciones = new ArrayList<>();
+    private EstacionAdapter adapter;
+
+    private double miLatitud = 0;
+    private double miLongitud = 0;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_buscar_estacion);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Estaciones Cercanas");
+        }
+
+        recyclerView = findViewById(R.id.recyclerView);
+        progressBar  = findViewById(R.id.progressBar);
+        tvVacio      = findViewById(R.id.tvVacio);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new EstacionAdapter(estaciones);
+        recyclerView.setAdapter(adapter);
+
+        TokenManager tokenManager = new TokenManager(this);
+        apiService = ApiClient.getClientWithToken(tokenManager.getToken())
+                .create(ApiService.class);
+
+        fusedLocationProviderClient =
+                LocationServices.getFusedLocationProviderClient(this);
+
+        solicitarUbicacionYCargar();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
+    // ── 1. Pedir permiso GPS ──────────────────────────────────────────────────
+
+    private void solicitarUbicacionYCargar() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            obtenerUbicacion();
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION);
+        }
+    }
+
+    // ── 2. Obtener coordenadas GPS ────────────────────────────────────────────
+
+    private void obtenerUbicacion() {
+        // TEMPORAL para pruebas en emulador — simula ubicación en Bogotá centro
+        miLatitud  = 4.6097;
+        miLongitud = -74.0817;
+        android.util.Log.d("GPS", "Usando ubicación hardcodeada Bogotá: " + miLatitud + ", " + miLongitud);
+        cargarEstaciones();
+    }
+
+
+    // ── 3. Resultado del diálogo de permiso ───────────────────────────────────
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_LOCATION
+                && grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            obtenerUbicacion();
+        } else {
+            Toast.makeText(this,
+                    "Permiso denegado, mostrando todas las estaciones",
+                    Toast.LENGTH_SHORT).show();
+            cargarEstaciones();
+        }
+    }
+
+    // ── 4. Cargar estaciones y calcular distancia ─────────────────────────────
+
+    private void cargarEstaciones() {
+        apiService.getEstaciones().enqueue(new Callback<List<EstacionResponse>>() {
+            @Override
+            public void onResponse(Call<List<EstacionResponse>> call,
+                                   Response<List<EstacionResponse>> response) {
+                progressBar.setVisibility(View.GONE);
+                if (response.isSuccessful() && response.body() != null) {
+                    estaciones.clear();
+                    List<EstacionResponse> lista = response.body();
+
+                    // Calcular distancia si tenemos GPS
+                    if (miLatitud != 0 && miLongitud != 0) {
+                        for (EstacionResponse e : lista) {
+                            if (e.getLatitud() != 0 && e.getLongitud() != 0) {
+                                float[] resultado = new float[1];
+                                android.location.Location.distanceBetween(
+                                        miLatitud, miLongitud,
+                                        e.getLatitud(), e.getLongitud(),
+                                        resultado);
+                                e.setDistanciaKm(resultado[0] / 1000f);
+                            }
+                        }
+                        // Ordenar por distancia
+                        Collections.sort(lista, (a, b) -> Float.compare(
+                                a.getDistanciaKm() != null ? a.getDistanciaKm() : Float.MAX_VALUE,
+                                b.getDistanciaKm() != null ? b.getDistanciaKm() : Float.MAX_VALUE
+                        ));
+                    }
+
+                    estaciones.addAll(lista);
+                    adapter.notifyDataSetChanged();
+                    tvVacio.setVisibility(estaciones.isEmpty() ? View.VISIBLE : View.GONE);
+                } else {
+                    Toast.makeText(BuscarEstacionActivity.this,
+                            "Error al cargar estaciones", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<EstacionResponse>> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(BuscarEstacionActivity.this,
+                        "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // ── Adapter ───────────────────────────────────────────────────────────────
+
+    private class EstacionAdapter extends RecyclerView.Adapter<EstacionAdapter.ViewHolder> {
+
+        private final List<EstacionResponse> lista;
+
+        EstacionAdapter(List<EstacionResponse> lista) { this.lista = lista; }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_estacion, parent, false);
+            return new ViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder h, int pos) {
+            EstacionResponse e = lista.get(pos);
+
+            h.tvNombre.setText(e.getNombre());
+            h.tvUbicacion.setText("📍 " + (e.getUbicacion() != null ? e.getUbicacion() : ""));
+            h.tvZona.setText("Zona: " + (e.getZona() != null ? e.getZona() : ""));
+            h.tvActiva.setText(e.isActiva() ? "✅ Activa" : "❌ Inactiva");
+
+            if (e.getDistanciaKm() != null) {
+                h.tvDistancia.setText(String.format("🚗 %.2f km de distancia", e.getDistanciaKm()));
+                h.tvDistancia.setVisibility(View.VISIBLE);
+            } else {
+                h.tvDistancia.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        public int getItemCount() { return lista.size(); }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            TextView tvNombre, tvUbicacion, tvZona, tvDistancia, tvActiva;
+
+            ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                tvNombre    = itemView.findViewById(R.id.tvNombre);
+                tvUbicacion = itemView.findViewById(R.id.tvUbicacion);
+                tvZona      = itemView.findViewById(R.id.tvZona);
+                tvDistancia = itemView.findViewById(R.id.tvDistancia);
+                tvActiva    = itemView.findViewById(R.id.tvActiva);
+            }
+        }
+    }
+}

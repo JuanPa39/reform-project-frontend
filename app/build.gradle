@@ -26,6 +26,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -37,7 +40,8 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0'
     implementation 'androidx.security:security-crypto:1.1.0-alpha06'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
-    implementation libs.play.services.location
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

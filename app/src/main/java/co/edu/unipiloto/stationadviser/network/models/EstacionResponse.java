@@ -8,6 +8,7 @@ public class EstacionResponse {
     private boolean activa;
     private double latitud;
     private double longitud;
+    private Float distanciaKm;
 
     private String zona;
     public EstacionResponse() {}
@@ -35,4 +36,7 @@ public class EstacionResponse {
 
     public String getZona() { return zona; }
     public void setZona(String zona) { this.zona = zona; }
+
+    public Float getDistanciaKm() { return distanciaKm; }
+    public void setDistanciaKm(Float distanciaKm) { this.distanciaKm = distanciaKm; }
 }
