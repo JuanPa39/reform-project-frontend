@@ -32,7 +32,7 @@ import retrofit2.Response;
 public class RoleBaseActivity extends AppCompatActivity {
 
     private static final String TAG = "RoleBaseActivity";
-    private Button button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12, button13, button14, buttonLogout;
+    private Button button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12, button13, button14, button15, buttonLogout;
     private TextView textViewEmail;
     private String userEmail;
     private String userRole;
@@ -88,6 +88,7 @@ public class RoleBaseActivity extends AppCompatActivity {
         button12 = findViewById(R.id.button12);
         button13 = findViewById(R.id.button13);
         button14 = findViewById(R.id.button14);
+        button15 = findViewById(R.id.button15);
         buttonLogout = findViewById(R.id.buttonLogout);
         textViewEmail = findViewById(R.id.textViewEmail);
 
@@ -128,6 +129,7 @@ public class RoleBaseActivity extends AppCompatActivity {
         button12.setVisibility(View.GONE);
         button13.setVisibility(View.GONE);
         button14.setVisibility(View.GONE);
+        button15.setVisibility(View.GONE);
 
 
         Log.d(TAG, "Configurando botones para rol: " + userRole);
@@ -171,6 +173,7 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button12.setVisibility(View.VISIBLE);
                     button13.setVisibility(View.VISIBLE);
                     button14.setVisibility(View.VISIBLE);
+                    button15.setVisibility(View.VISIBLE);
 
                     button1.setText("Registrar estación");
                     button2.setText("Consultar notificaciones");
@@ -186,6 +189,7 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button12.setText("📊 Exportar Reporte Excel");
                     button13.setText("📤 Compartir Reporte");
                     button14.setText("📋 Historial de recargas");
+                    button15.setText("Solicitar abastecimiento");
 
                     button1.setOnClickListener(v -> startActivity(new Intent(this, RegistrarEstacionActivity.class)));
                     button2.setOnClickListener(v -> startActivity(new Intent(this, ConsultarNotificacionActivity.class)));
@@ -201,6 +205,7 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button12.setOnClickListener(v -> exportarReporte("excel"));
                     button13.setOnClickListener(v -> compartirReporte());
                     button14.setOnClickListener(v -> startActivity(new Intent(this, HistorialRecargasActivity.class)));
+                    button15.setOnClickListener(v -> startActivity(new Intent(this, SolicitarAbastecimientoActivity.class)));
                     break;
 
                 case "equipo técnico":

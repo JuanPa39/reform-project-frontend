@@ -1,11 +1,14 @@
 package co.edu.unipiloto.stationadviser.Activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +20,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -41,83 +43,62 @@ public class MapaRutaActivity extends AppCompatActivity implements OnMapReadyCal
     private LatLng puntoDestino;
     private Marker markerInicio;
     private Marker markerDestino;
-    private LatLng pendingMarker; // almacena temporalmente el punto antes de elegir rol
-    private TextView tvEstado;
-    private LatLng pendingDestino;
-    private String pendingDestinoNombre;
+    private RadioGroup radioGroupModo;
+    private RadioButton radioInicio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa_ruta);
-        double destLat = getIntent().getDoubleExtra("destino_lat", 0);
-        double destLon = getIntent().getDoubleExtra("destino_lon", 0);
-        String destNombre = getIntent().getStringExtra("destino_nombre");
-        if (destLat != 0 && destLon != 0) {
-            LatLng destino = new LatLng(destLat, destLon);
-            // Necesitamos esperar a que el mapa esté listo
-            if (mMap != null) {
-                setPuntoDestino(destino);
-                Toast.makeText(this, "Destino: " + destNombre, Toast.LENGTH_SHORT).show();
-            } else {
-                // Guardar en variable temporal
-                pendingDestino = destino;
-                pendingDestinoNombre = destNombre;
-            }
-        }
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapFragment);
         mapFragment.getMapAsync(this);
 
-        tvEstado = findViewById(R.id.tvEstado);
-
         Button btnMyLocation = findViewById(R.id.btnMyLocation);
         Button btnClearMarkers = findViewById(R.id.btnClearMarkers);
         Button btnPlanRoute = findViewById(R.id.btnPlanRoute);
-        Button btnSetStart = findViewById(R.id.btnSetStart);
-        Button btnSetDest = findViewById(R.id.btnSetDest);
+        radioGroupModo = findViewById(R.id.radioGroupModo);
+        radioInicio = findViewById(R.id.radioInicio);
 
         btnMyLocation.setOnClickListener(v -> obtenerUbicacionActual());
-        btnClearMarkers.setOnClickListener(v -> limpiarTodo());
+        btnClearMarkers.setOnClickListener(v -> limpiarMarcadores());
         btnPlanRoute.setOnClickListener(v -> planificarRuta());
-        btnSetStart.setOnClickListener(v -> {
-            if (pendingMarker != null) {
-                setPuntoInicio(pendingMarker);
-                pendingMarker = null;
-                tvEstado.setText("Inicio fijado. Toca largo para otro punto o selecciona estación como destino.");
-            } else {
-                Toast.makeText(this, "Primero toca largo en el mapa para añadir un punto", Toast.LENGTH_SHORT).show();
-            }
-        });
-        btnSetDest.setOnClickListener(v -> {
-            if (pendingMarker != null) {
-                setPuntoDestino(pendingMarker);
-                pendingMarker = null;
-                tvEstado.setText("Destino fijado. Puedes añadir más puntos o planificar ruta.");
-            } else {
-                Toast.makeText(this, "Primero toca largo en el mapa para añadir un punto", Toast.LENGTH_SHORT).show();
-            }
-        });
+
+        // Recibir datos de estación seleccionada desde otra activity
+        double destLat = getIntent().getDoubleExtra("destino_lat", 0);
+        double destLon = getIntent().getDoubleExtra("destino_lon", 0);
+        String destNombre = getIntent().getStringExtra("destino_nombre");
+        if (destLat != 0 && destLon != 0) {
+            puntoDestino = new LatLng(destLat, destLon);
+            // El marcador se pondrá cuando el mapa esté listo
+        }
     }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.setOnMapLongClickListener(latLng -> {
-            pendingMarker = latLng;
-            tvEstado.setText("Punto agregado: " + latLng.latitude + ", " + latLng.longitude + ". Elige INICIO o DESTINO.");
-        });
 
-        if (pendingDestino != null) {
-            setPuntoDestino(pendingDestino);
-            if (pendingDestinoNombre != null)
-                Toast.makeText(this, "Destino: " + pendingDestinoNombre, Toast.LENGTH_SHORT).show();
-            pendingDestino = null;
+        // Si hay destino precargado, agregar marcador
+        if (puntoDestino != null) {
+            markerDestino = mMap.addMarker(new MarkerOptions().position(puntoDestino).title("Destino: " + getIntent().getStringExtra("destino_nombre")));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(puntoDestino, 14));
         }
+
+        // Configurar click largo para agregar marcadores según el modo seleccionado
+        mMap.setOnMapLongClickListener(latLng -> {
+            int selectedId = radioGroupModo.getCheckedRadioButtonId();
+            if (selectedId == R.id.radioInicio) {
+                setPuntoInicio(latLng);
+            } else {
+                setPuntoDestino(latLng);
+            }
+        });
     }
+
     private void obtenerUbicacionActual() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -131,100 +112,69 @@ public class MapaRutaActivity extends AppCompatActivity implements OnMapReadyCal
                 LatLng miPos = new LatLng(location.getLatitude(), location.getLongitude());
                 setPuntoInicio(miPos);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(miPos, 15));
-                tvEstado.setText("Inicio = tu ubicación actual. Toca largo para añadir destino.");
             } else {
-                Toast.makeText(this, "No se pudo obtener ubicación. Activa GPS y reinicia app.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "No se pudo obtener ubicación. Activa el GPS.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void setPuntoInicio(LatLng latLng) {
         if (markerInicio != null) markerInicio.remove();
-        markerInicio = mMap.addMarker(new MarkerOptions()
-                .position(latLng)
-                .title("Inicio")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        markerInicio = mMap.addMarker(new MarkerOptions().position(latLng).title("Inicio"));
         puntoInicio = latLng;
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         Toast.makeText(this, "Punto de inicio fijado", Toast.LENGTH_SHORT).show();
     }
 
     private void setPuntoDestino(LatLng latLng) {
         if (markerDestino != null) markerDestino.remove();
-        markerDestino = mMap.addMarker(new MarkerOptions()
-                .position(latLng)
-                .title("Destino")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        markerDestino = mMap.addMarker(new MarkerOptions().position(latLng).title("Destino"));
         puntoDestino = latLng;
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         Toast.makeText(this, "Destino fijado", Toast.LENGTH_SHORT).show();
     }
 
-    private void limpiarTodo() {
-        if (markerInicio != null) markerInicio.remove();
-        if (markerDestino != null) markerDestino.remove();
-        puntoInicio = null;
-        puntoDestino = null;
-        pendingMarker = null;
+    private void limpiarMarcadores() {
+        if (markerInicio != null) {
+            markerInicio.remove();
+            markerInicio = null;
+            puntoInicio = null;
+        }
+        if (markerDestino != null) {
+            markerDestino.remove();
+            markerDestino = null;
+            puntoDestino = null;
+        }
+        // Opcional: limpiar las rutas dibujadas
         mMap.clear();
-        tvEstado.setText("Marcadores borrados. Toca largo en el mapa para comenzar.");
-        Toast.makeText(this, "Todo limpiado", Toast.LENGTH_SHORT).show();
+        // Si había destino precargado por intent, restaurarlo
+        double destLat = getIntent().getDoubleExtra("destino_lat", 0);
+        double destLon = getIntent().getDoubleExtra("destino_lon", 0);
+        String destNombre = getIntent().getStringExtra("destino_nombre");
+        if (destLat != 0 && destLon != 0) {
+            puntoDestino = new LatLng(destLat, destLon);
+            markerDestino = mMap.addMarker(new MarkerOptions().position(puntoDestino).title("Destino: " + destNombre));
+        }
+        Toast.makeText(this, "Marcadores borrados", Toast.LENGTH_SHORT).show();
     }
 
     private void planificarRuta() {
         if (puntoInicio == null || puntoDestino == null) {
-            Toast.makeText(this, "Fija primero el inicio y el destino", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Debes fijar el punto de inicio y el destino", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        new Thread(() -> {
-            try {
-                String url = "https://maps.googleapis.com/maps/api/directions/json" +
-                        "?origin=" + puntoInicio.latitude + "," + puntoInicio.longitude +
-                        "&destination=" + puntoDestino.latitude + "," + puntoDestino.longitude +
-                        "&key=TU_API_KEY_DE_GOOGLE_MAPS";
+        Uri gmmIntentUri = Uri.parse("https://www.google.com/maps/dir/" +
+                puntoInicio.latitude + "," + puntoInicio.longitude +
+                "/" + puntoDestino.latitude + "," + puntoDestino.longitude +
+                "/?travelmode=driving");
 
-                OkHttpClient client = new OkHttpClient();
-                Request request = new Request.Builder().url(url).build();
-                Response response = client.newCall(request).execute();
-                String json = response.body().string();
-                JSONObject obj = new JSONObject(json);
-                JSONArray routes = obj.getJSONArray("routes");
-                if (routes.length() > 0) {
-                    JSONObject route = routes.getJSONObject(0);
-                    JSONObject overviewPolyline = route.getJSONObject("overview_polyline");
-                    String points = overviewPolyline.getString("points");
-                    List<LatLng> decodedPath = PolyUtil.decode(points);
-                    runOnUiThread(() -> {
-                        mMap.addPolyline(new PolylineOptions().addAll(decodedPath).width(12).color(0xFF2196F3));
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(puntoInicio, 12));
-                        tvEstado.setText("Ruta trazada.");
-                    });
-                } else {
-                    runOnUiThread(() -> {
-                        Toast.makeText(MapaRutaActivity.this, "No se encontró ruta", Toast.LENGTH_SHORT).show();
-                        tvEstado.setText("No hay ruta disponible entre esos puntos.");
-                    });
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                runOnUiThread(() -> {
-                    Toast.makeText(MapaRutaActivity.this, "Error al planificar ruta", Toast.LENGTH_SHORT).show();
-                    tvEstado.setText("Error de conexión con Directions API.");
-                });
-            }
-        }).start();
-    }
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
 
-    // Método público para que otras activities puedan establecer destino (ej: al seleccionar estación)
-    public void setDestinoExterno(LatLng latLng, String nombre) {
-        if (mMap != null) {
-            setPuntoDestino(latLng);
-            if (nombre != null) {
-                Toast.makeText(this, "Destino: " + nombre, Toast.LENGTH_SHORT).show();
-            }
+        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(mapIntent);
         } else {
-            // guardar para cuando el mapa esté listo (podría hacerse con una variable)
+            // Si no tiene Google Maps, abrir en navegador
+            startActivity(new Intent(Intent.ACTION_VIEW, gmmIntentUri));
         }
     }
 
@@ -234,7 +184,7 @@ public class MapaRutaActivity extends AppCompatActivity implements OnMapReadyCal
         if (requestCode == LOCATION_PERMISSION_REQUEST && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             obtenerUbicacionActual();
         } else {
-            Toast.makeText(this, "Permiso de ubicación necesario para usar 'Mi ubicación'", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Permiso de ubicación necesario para usar 'Mi ubicación'", Toast.LENGTH_SHORT).show();
         }
     }
 }

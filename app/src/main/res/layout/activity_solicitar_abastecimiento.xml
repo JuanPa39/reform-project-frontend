@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#1A2E4A">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#0D1B2A"
+        android:titleTextColor="#FFFFFF"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Solicitar Abastecimiento"
+        android:textSize="22sp"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Distribuidor"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="8dp"/>
+
+    <Spinner
+        android:id="@+id/spinnerDistribuidor"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#243B5E"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tipo de Combustible"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="8dp"/>
+
+    <Spinner
+        android:id="@+id/spinnerCombustible"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#243B5E"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cantidad (galones)"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/editCantidad"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Ej: 1000"
+        android:inputType="numberDecimal"
+        android:background="#243B5E"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#AAAAAA"
+        android:paddingStart="16dp"
+        android:layout_marginBottom="24dp"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/buttonSolicitar"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="ENVIAR SOLICITUD"
+        android:backgroundTint="#2196F3"
+        android:textColor="#FFFFFF"/>
+
+    <TextView
+        android:id="@+id/textViewMensaje"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#FF6B6B"
+        android:gravity="center"
+        android:layout_marginTop="16dp"/>
+
+</LinearLayout>

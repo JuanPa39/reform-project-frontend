@@ -15,8 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp"
-        android:weightSum="3">
+        android:padding="8dp">
 
         <Button
             android:id="@+id/btnMyLocation"
@@ -30,48 +29,48 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Borrar todo" />
+            android:text="Borrar marcadores" />
 
         <Button
             android:id="@+id/btnPlanRoute"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Planificar ruta" />
+            android:text="Trazar ruta" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp"
-        android:weightSum="2">
+        android:padding="8dp">
 
-        <Button
-            android:id="@+id/btnSetStart"
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Marcar como INICIO"
-            android:backgroundTint="#4CAF50" />
+            android:text="Modo: "
+            android:textColor="#FFFFFF" />
 
-        <Button
-            android:id="@+id/btnSetDest"
-            android:layout_width="0dp"
+        <RadioGroup
+            android:id="@+id/radioGroupModo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Marcar como DESTINO"
-            android:backgroundTint="#F44336" />
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioInicio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Marcar como inicio"
+                android:textColor="#FFFFFF"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/radioDestino"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Marcar como destino"
+                android:textColor="#FFFFFF" />
+        </RadioGroup>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvEstado"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="Toca largo en el mapa para añadir punto, luego elige si es INICIO o DESTINO"
-        android:textColor="#FFFFFF"
-        android:background="#1A2E4A"
-        android:textSize="12sp" />
-
 </LinearLayout>

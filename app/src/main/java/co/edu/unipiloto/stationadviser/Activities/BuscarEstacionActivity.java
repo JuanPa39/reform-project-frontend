@@ -91,8 +91,6 @@ public class BuscarEstacionActivity extends AppCompatActivity {
         return true;
     }
 
-    // ── 1. Pedir permiso GPS ──────────────────────────────────────────────────
-
     private void solicitarUbicacionYCargar() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -105,8 +103,6 @@ public class BuscarEstacionActivity extends AppCompatActivity {
         }
     }
 
-    // ── 2. Obtener coordenadas GPS ────────────────────────────────────────────
-
     private void obtenerUbicacion() {
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -114,13 +110,29 @@ public class BuscarEstacionActivity extends AppCompatActivity {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        fusedLocationProviderClient.getLastLocation()
-                .addOnSuccessListener(this, location -> {
-                    progressBar.setVisibility(View.GONE);
-                    double latDetectada  = location != null ? location.getLatitude()  : 0;
-                    double lonDetectada  = location != null ? location.getLongitude() : 0;
-                    mostrarDialogoUbicacion(latDetectada, lonDetectada);
-                });
+        com.google.android.gms.location.LocationRequest locationRequest =
+                com.google.android.gms.location.LocationRequest.create()
+                        .setPriority(com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY)
+                        .setNumUpdates(1)
+                        .setInterval(1000);
+
+        fusedLocationProviderClient.requestLocationUpdates(
+                locationRequest,
+                new com.google.android.gms.location.LocationCallback() {
+                    @Override
+                    public void onLocationResult(
+                            @NonNull com.google.android.gms.location.LocationResult result) {
+                        fusedLocationProviderClient.removeLocationUpdates(this);
+                        progressBar.setVisibility(View.GONE);
+                        double latDetectada = result.getLastLocation() != null
+                                ? result.getLastLocation().getLatitude() : 4.7110;
+                        double lonDetectada = result.getLastLocation() != null
+                                ? result.getLastLocation().getLongitude() : -74.0721;
+                        mostrarDialogoUbicacion(latDetectada, lonDetectada);
+                    }
+                },
+                getMainLooper()
+        );
     }
 
     private void mostrarDialogoUbicacion(double latDetectada, double lonDetectada) {
@@ -163,7 +175,6 @@ public class BuscarEstacionActivity extends AppCompatActivity {
                 })
                 .show();
     }
-    // ── 3. Resultado del diálogo de permiso ───────────────────────────────────
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -181,8 +192,6 @@ public class BuscarEstacionActivity extends AppCompatActivity {
         }
     }
 
-    // ── 4. Cargar estaciones y calcular distancia ─────────────────────────────
-
     private void cargarEstaciones() {
         apiService.getEstaciones().enqueue(new Callback<List<EstacionResponse>>() {
             @Override
@@ -193,7 +202,6 @@ public class BuscarEstacionActivity extends AppCompatActivity {
                     estaciones.clear();
                     List<EstacionResponse> lista = response.body();
 
-                    // Calcular distancia si tenemos GPS
                     if (miLatitud != 0 && miLongitud != 0) {
                         for (EstacionResponse e : lista) {
                             if (e.getLatitud() != 0 && e.getLongitud() != 0) {
@@ -205,7 +213,6 @@ public class BuscarEstacionActivity extends AppCompatActivity {
                                 e.setDistanciaKm(resultado[0] / 1000f);
                             }
                         }
-                        // Ordenar por distancia
                         Collections.sort(lista, (a, b) -> Float.compare(
                                 a.getDistanciaKm() != null ? a.getDistanciaKm() : Float.MAX_VALUE,
                                 b.getDistanciaKm() != null ? b.getDistanciaKm() : Float.MAX_VALUE
@@ -230,8 +237,6 @@ public class BuscarEstacionActivity extends AppCompatActivity {
         });
     }
 
-    // ── Adapter ───────────────────────────────────────────────────────────────
-
     private class EstacionAdapter extends RecyclerView.Adapter<EstacionAdapter.ViewHolder> {
 
         private final List<EstacionResponse> lista;
@@ -250,33 +255,29 @@ public class BuscarEstacionActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ViewHolder h, int pos) {
             EstacionResponse e = lista.get(pos);
             h.tvNombre.setText(e.getNombre());
-            // ... resto de textos
+            h.tvUbicacion.setText("📍 " + (e.getUbicacion() != null ? e.getUbicacion() : ""));
+            h.tvZona.setText("Zona: " + (e.getZona() != null ? e.getZona() : ""));
+            h.tvActiva.setText(e.isActiva() ? "✅ Activa" : "❌ Inactiva");
+
+            if (e.getDistanciaKm() != null) {
+                h.tvDistancia.setText(String.format("🚗 %.2f km de distancia", e.getDistanciaKm()));
+                h.tvDistancia.setVisibility(View.VISIBLE);
+            } else {
+                h.tvDistancia.setVisibility(View.GONE);
+            }
+
             h.itemView.setOnClickListener(v -> {
-                // Geocodificar la dirección de la estación
-                String direccion = e.getUbicacion();
-                if (direccion == null || direccion.isEmpty()) {
-                    Toast.makeText(v.getContext(), "La estación no tiene dirección registrada", Toast.LENGTH_SHORT).show();
+                if (e.getLatitud() == 0 && e.getLongitud() == 0) {
+                    Toast.makeText(v.getContext(),
+                            "La estación " + e.getNombre() + " no tiene coordenadas GPS registradas",
+                            Toast.LENGTH_LONG).show();
                     return;
                 }
-                // Añadir "Colombia" para mejorar precisión
-                direccion += ", Colombia";
-                Geocoder geocoder = new Geocoder(v.getContext(), Locale.getDefault());
-                try {
-                    List<Address> addresses = geocoder.getFromLocationName(direccion, 1);
-                    if (addresses != null && !addresses.isEmpty()) {
-                        Address addr = addresses.get(0);
-                        LatLng coord = new LatLng(addr.getLatitude(), addr.getLongitude());
-                        Intent intent = new Intent(v.getContext(), MapaRutaActivity.class);
-                        intent.putExtra("destino_lat", coord.latitude);
-                        intent.putExtra("destino_lon", coord.longitude);
-                        intent.putExtra("destino_nombre", e.getNombre());
-                        v.getContext().startActivity(intent);
-                    } else {
-                        Toast.makeText(v.getContext(), "No se pudo geolocalizar la dirección: " + direccion, Toast.LENGTH_LONG).show();
-                    }
-                } catch (IOException ex) {
-                    Toast.makeText(v.getContext(), "Error de geocodificación: " + ex.getMessage(), Toast.LENGTH_LONG).show();
-                }
+                Intent intent = new Intent(v.getContext(), MapaRutaActivity.class);
+                intent.putExtra("destino_lat", e.getLatitud());
+                intent.putExtra("destino_lon", e.getLongitud());
+                intent.putExtra("destino_nombre", e.getNombre());
+                v.getContext().startActivity(intent);
             });
         }
 

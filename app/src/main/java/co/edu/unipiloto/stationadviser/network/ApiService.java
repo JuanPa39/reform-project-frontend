@@ -131,4 +131,9 @@ public interface ApiService {
     @PUT("abastecimientos/{id}/completar")
     Call<AbastecimientoResponse> completarAbastecimiento(@Path("id") Long id);
 
+    @GET("distribuidores")
+    Call<List<DistribuidorResponse>> getDistribuidores();
+
+    @POST("abastecimientos/solicitar")
+    Call<AbastecimientoResponse> solicitarAbastecimiento(@Body AbastecimientoRequest request);
 }
