@@ -29,6 +29,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import java.util.Collections;
+import com.google.android.gms.tasks.OnSuccessListener;
+import android.location.Location;
 
 public class BuscarEstacionActivity extends AppCompatActivity {
 
@@ -98,14 +100,61 @@ public class BuscarEstacionActivity extends AppCompatActivity {
     // ── 2. Obtener coordenadas GPS ────────────────────────────────────────────
 
     private void obtenerUbicacion() {
-        // TEMPORAL para pruebas en emulador — simula ubicación en Bogotá centro
-        miLatitud  = 4.6097;
-        miLongitud = -74.0817;
-        android.util.Log.d("GPS", "Usando ubicación hardcodeada Bogotá: " + miLatitud + ", " + miLongitud);
-        cargarEstaciones();
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) return;
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        fusedLocationProviderClient.getLastLocation()
+                .addOnSuccessListener(this, location -> {
+                    progressBar.setVisibility(View.GONE);
+                    double latDetectada  = location != null ? location.getLatitude()  : 0;
+                    double lonDetectada  = location != null ? location.getLongitude() : 0;
+                    mostrarDialogoUbicacion(latDetectada, lonDetectada);
+                });
     }
 
+    private void mostrarDialogoUbicacion(double latDetectada, double lonDetectada) {
+        android.widget.LinearLayout layout = new android.widget.LinearLayout(this);
+        layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+        layout.setPadding(50, 20, 50, 20);
 
+        android.widget.EditText etLatitud = new android.widget.EditText(this);
+        etLatitud.setHint("Latitud");
+        etLatitud.setText(latDetectada != 0 ? String.valueOf(latDetectada) : "");
+        etLatitud.setInputType(android.text.InputType.TYPE_CLASS_NUMBER
+                | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
+                | android.text.InputType.TYPE_NUMBER_FLAG_SIGNED);
+        layout.addView(etLatitud);
+
+        android.widget.EditText etLongitud = new android.widget.EditText(this);
+        etLongitud.setHint("Longitud");
+        etLongitud.setText(lonDetectada != 0 ? String.valueOf(lonDetectada) : "");
+        etLongitud.setInputType(android.text.InputType.TYPE_CLASS_NUMBER
+                | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
+                | android.text.InputType.TYPE_NUMBER_FLAG_SIGNED);
+        layout.addView(etLongitud);
+
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("📍 Confirma tu ubicación")
+                .setMessage("Tu ubicación detectada. Corrígela si es necesario:")
+                .setView(layout)
+                .setCancelable(false)
+                .setPositiveButton("Buscar estaciones", (dialog, which) -> {
+                    try {
+                        miLatitud  = Double.parseDouble(etLatitud.getText().toString().trim());
+                        miLongitud = Double.parseDouble(etLongitud.getText().toString().trim());
+                        cargarEstaciones();
+                    } catch (NumberFormatException e) {
+                        Toast.makeText(this, "Coordenadas inválidas", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Ver todas sin distancia", (dialog, which) -> {
+                    cargarEstaciones();
+                })
+                .show();
+    }
     // ── 3. Resultado del diálogo de permiso ───────────────────────────────────
 
     @Override
