@@ -149,6 +149,10 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button4.setVisibility(View.VISIBLE);
                     button4.setText("Ver estaciones cercanas");
                     button4.setOnClickListener(v -> startActivity(new Intent(this, BuscarEstacionActivity.class)));
+                    // Después de button4 (Ver estaciones cercanas)
+                    button5.setVisibility(View.VISIBLE);
+                    button5.setText("Planificar ruta a gasolinera");
+                    button5.setOnClickListener(v -> startActivity(new Intent(this, MapaRutaActivity.class)));
                     break;
 
                 case "empleado de estación":

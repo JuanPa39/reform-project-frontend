@@ -1,6 +1,7 @@
 package co.edu.unipiloto.stationadviser.Activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import co.edu.unipiloto.stationadviser.R;
@@ -29,6 +32,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import java.util.Collections;
+import android.location.Address;
+import android.location.Geocoder;
+import java.util.Locale;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import android.location.Location;
 
@@ -241,18 +249,35 @@ public class BuscarEstacionActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder h, int pos) {
             EstacionResponse e = lista.get(pos);
-
             h.tvNombre.setText(e.getNombre());
-            h.tvUbicacion.setText("📍 " + (e.getUbicacion() != null ? e.getUbicacion() : ""));
-            h.tvZona.setText("Zona: " + (e.getZona() != null ? e.getZona() : ""));
-            h.tvActiva.setText(e.isActiva() ? "✅ Activa" : "❌ Inactiva");
-
-            if (e.getDistanciaKm() != null) {
-                h.tvDistancia.setText(String.format("🚗 %.2f km de distancia", e.getDistanciaKm()));
-                h.tvDistancia.setVisibility(View.VISIBLE);
-            } else {
-                h.tvDistancia.setVisibility(View.GONE);
-            }
+            // ... resto de textos
+            h.itemView.setOnClickListener(v -> {
+                // Geocodificar la dirección de la estación
+                String direccion = e.getUbicacion();
+                if (direccion == null || direccion.isEmpty()) {
+                    Toast.makeText(v.getContext(), "La estación no tiene dirección registrada", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                // Añadir "Colombia" para mejorar precisión
+                direccion += ", Colombia";
+                Geocoder geocoder = new Geocoder(v.getContext(), Locale.getDefault());
+                try {
+                    List<Address> addresses = geocoder.getFromLocationName(direccion, 1);
+                    if (addresses != null && !addresses.isEmpty()) {
+                        Address addr = addresses.get(0);
+                        LatLng coord = new LatLng(addr.getLatitude(), addr.getLongitude());
+                        Intent intent = new Intent(v.getContext(), MapaRutaActivity.class);
+                        intent.putExtra("destino_lat", coord.latitude);
+                        intent.putExtra("destino_lon", coord.longitude);
+                        intent.putExtra("destino_nombre", e.getNombre());
+                        v.getContext().startActivity(intent);
+                    } else {
+                        Toast.makeText(v.getContext(), "No se pudo geolocalizar la dirección: " + direccion, Toast.LENGTH_LONG).show();
+                    }
+                } catch (IOException ex) {
+                    Toast.makeText(v.getContext(), "Error de geocodificación: " + ex.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
         }
 
         @Override
