@@ -105,4 +105,30 @@ public interface ApiService {
 
     @GET("reportes/ventas/excel")
     Call<ResponseBody> exportarReporteExcel(@Query("fechaInicio") String fechaInicio, @Query("fechaFin") String fechaFin);
+
+    @GET("abastecimientos/historial")
+    Call<List<AbastecimientoResponse>> getHistorialRecargas(
+            @Query("fechaInicio") String fechaInicio,
+            @Query("fechaFin") String fechaFin,
+            @Query("combustibleId") Long combustibleId
+    );
+
+    @GET("combustibles")
+    Call<List<CombustibleResponse>> getCombustibles();
+
+    @GET("abastecimientos")
+    Call<List<AbastecimientoResponse>> getAbastecimientos();
+
+    @GET("abastecimientos/estado/{estado}")
+    Call<List<AbastecimientoResponse>> getAbastecimientosPorEstado(@Path("estado") String estado);
+
+    @PUT("abastecimientos/{id}/aprobar")
+    Call<AbastecimientoResponse> aprobarAbastecimiento(@Path("id") Long id);
+
+    @PUT("abastecimientos/{id}/rechazar")
+    Call<AbastecimientoResponse> rechazarAbastecimiento(@Path("id") Long id);
+
+    @PUT("abastecimientos/{id}/completar")
+    Call<AbastecimientoResponse> completarAbastecimiento(@Path("id") Long id);
+
 }
